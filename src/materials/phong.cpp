@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include <cmath>
+
 Phong::Phong()
 { }
 
@@ -12,10 +14,12 @@ rho_d(Kd_), Ks(Ks_), alpha(alpha_){}
 Vector3D Phong::getReflectance(const Vector3D& n, const Vector3D& wo,
     const Vector3D& wi) const {
 
-    //FILL(...)
+    Vector3D wr = n * 2 * dot(n,  wi) - wi;
 
-    return Vector3D(0.0);
+    Vector3D reflectance = rho_d / 3.14f + Ks*std::pow(dot(wo, wr), alpha);
 
+    return reflectance;
+   
 };
 
 double Phong::getIndexOfRefraction() const

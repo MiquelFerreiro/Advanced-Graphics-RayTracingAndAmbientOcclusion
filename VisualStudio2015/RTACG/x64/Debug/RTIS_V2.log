@@ -1,7 +1,2 @@
-﻿  main.cpp
-C:\Users\paqui\OneDrive\Escritorio\MIQUEL\UPF\4o\AG\RTACG_Students\src\main.cpp(259,21): warning C4244: 'inicializando': conversión de '_Rep' a 'float'; posible pérdida de datos
-          with
-          [
-              _Rep=double
-          ]
+﻿  normalshader.cpp
   RTIS_V2.vcxproj -> C:\Users\paqui\OneDrive\Escritorio\MIQUEL\UPF\4o\AG\RTACG_Students\VisualStudio2015\RTACG\x64\Debug\RT_ACG.exe

@@ -16,6 +16,7 @@
 
 #include "shaders/intersectionshader.h"
 #include "shaders/depthshader.h"
+#include "shaders/normalshader.h"
 
 
 #include "materials/phong.h"
@@ -205,6 +206,7 @@ void PaintImage(Film* film)
     }
 }
 
+
 int main()
 {
     std::string separator     = "\n----------------------------------------------\n";
@@ -223,6 +225,7 @@ int main()
     //First Assignment
     Shader *shader = new IntersectionShader (intersectionColor, bgColor);
     Shader *depthshader = new DepthShader (intersectionColor,10.0f, bgColor);
+    Shader *normalshader = new NormalShader(intersectionColor, 10.0f, bgColor);
     //(... normal, whitted) ...
 
   
@@ -243,9 +246,15 @@ int main()
 
     // Launch some rays! TASK 2,3,...   
     auto start = high_resolution_clock::now();
+
+    //TASK 2
     //raytrace(cam, shader, film, myScene.objectsList, myScene.LightSourceList);
 
-    raytrace(cam, depthshader, film, myScene.objectsList, myScene.LightSourceList);
+    //TASK3
+    //raytrace(cam, depthshader, film, myScene.objectsList, myScene.LightSourceList);
+
+    //TASK4
+    raytrace(cam, normalshader, film, myScene.objectsList, myScene.LightSourceList);
 
     auto stop = high_resolution_clock::now();
 

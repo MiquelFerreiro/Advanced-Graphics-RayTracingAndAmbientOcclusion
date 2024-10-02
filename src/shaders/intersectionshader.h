@@ -14,6 +14,7 @@ public:
                              const std::vector<LightSource*> &lsList) const;
 
     Vector3D hitColor;
+   
 };
 
 #endif // INTERSECTIONSHADER_H
