@@ -1,9 +1,11 @@
 {
   "ExpandedNodes": [
     "",
+    "\\src",
+    "\\src\\materials",
     "\\VisualStudio2015",
     "\\VisualStudio2015\\RTACG"
   ],
-  "SelectedNode": "\\VisualStudio2015\\RTACG\\RT_ACG.sln",
+  "SelectedNode": "\\src\\materials\\phong.h",
   "PreviewInSolutionExplorer": false
 }

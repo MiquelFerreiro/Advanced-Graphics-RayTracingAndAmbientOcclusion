@@ -96,7 +96,6 @@ void buildSceneCornellBox(Camera*& cam, Film*& film,
 
 }
 
-
 void buildSceneSphere(Camera*& cam, Film*& film,
     Scene myScene)
 {
@@ -236,8 +235,8 @@ int main()
     Camera* cam;
     Scene myScene;
     //Create Scene Geometry and Illumiantion
-    buildSceneSphere(cam, film, myScene); //Task 2,3,4;
-    //buildSceneCornellBox(cam, film, myScene); //Task 5
+    //buildSceneSphere(cam, film, myScene); //Task 2,3,4;
+    buildSceneCornellBox(cam, film, myScene); //Task 5
 
     //---------------------------------------------------------------------------
 
