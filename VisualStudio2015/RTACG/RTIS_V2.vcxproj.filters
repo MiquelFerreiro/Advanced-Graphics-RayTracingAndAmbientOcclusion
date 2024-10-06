@@ -117,6 +117,9 @@
     <ClCompile Include="..\..\src\shaders\whittedshader.cpp">
       <Filter>src\shaders</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\materials\mirror.cpp">
+      <Filter>src\materials</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\cameras\camera.h">
@@ -205,6 +208,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\shaders\whittedshader.h">
       <Filter>src\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\materials\mirror.h">
+      <Filter>src\materials</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

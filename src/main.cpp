@@ -22,6 +22,7 @@
 
 #include "materials/phong.h"
 #include "materials/emissive.h"
+#include "materials/mirror.h"
 
 #include <chrono>
 
@@ -52,7 +53,8 @@ void buildSceneCornellBox(Camera*& cam, Film*& film,
     Material* cyandiffuse = new Phong(Vector3D(0.2, 0.8, 0.8), Vector3D(0, 0, 0), 100);
 
     //Task 5.3
-    //Material* mirror = new Mirror();
+    Material* mirror = new Mirror(Vector3D(0.2, 0.8, 0.8), Vector3D(0, 0, 0), 100);
+
     //Task 5.4
     //Material* transmissive = new Transmissive(0.7);
 
@@ -86,7 +88,7 @@ void buildSceneCornellBox(Camera*& cam, Film*& film,
     sphereTransform2 = Matrix4x4::translate(Vector3D(-1.5, -offset + 3*radius, 4));
     Shape* s2 = new Sphere(radius, sphereTransform2, blueGlossy_80);
 
-    Shape* square = new Square(Vector3D(offset + 0.999, -offset-0.2, 3.0), Vector3D(0.0, 4.0, 0.0), Vector3D(0.0, 0.0, 2.0), Vector3D(-1.0, 0.0, 0.0), cyandiffuse);
+    Shape* square = new Square(Vector3D(offset + 0.999, -offset-0.2, 3.0), Vector3D(0.0, 4.0, 0.0), Vector3D(0.0, 0.0, 2.0), Vector3D(-1.0, 0.0, 0.0), mirror);
 
     myScene.AddObject(s1);
     myScene.AddObject(s2);
@@ -221,12 +223,13 @@ int main()
     // Declare the shader
     Vector3D bgColor(0.0, 0.0, 0.0); // Background color (for rays which do not intersect anything)
     Vector3D intersectionColor(1,0,0);
+    Vector3D ambientLight(0.2, 0.2, 0.2);
     
     //First Assignment
     Shader *shader = new IntersectionShader (intersectionColor, bgColor);
     Shader *depthshader = new DepthShader (intersectionColor,10.0f, bgColor);
     Shader *normalshader = new NormalShader(intersectionColor, 10.0f, bgColor);
-    Shader *whittedshader = new WhittedShader(intersectionColor, 10.0f, bgColor);
+    Shader *whittedshader = new WhittedShader(intersectionColor, 10.0f, bgColor, ambientLight);
     //(... normal, whitted) ...
 
   
