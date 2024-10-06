@@ -2,10 +2,12 @@
   "ExpandedNodes": [
     "",
     "\\src",
+    "\\src\\lightsources",
     "\\src\\materials",
+    "\\src\\shaders",
     "\\VisualStudio2015",
     "\\VisualStudio2015\\RTACG"
   ],
-  "SelectedNode": "\\src\\materials\\phong.h",
+  "SelectedNode": "\\VisualStudio2015\\RTACG\\RT_ACG.sln",
   "PreviewInSolutionExplorer": false
 }

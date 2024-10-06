@@ -17,6 +17,7 @@
 #include "shaders/intersectionshader.h"
 #include "shaders/depthshader.h"
 #include "shaders/normalshader.h"
+#include "shaders/whittedshader.h"
 
 
 #include "materials/phong.h"
@@ -225,6 +226,7 @@ int main()
     Shader *shader = new IntersectionShader (intersectionColor, bgColor);
     Shader *depthshader = new DepthShader (intersectionColor,10.0f, bgColor);
     Shader *normalshader = new NormalShader(intersectionColor, 10.0f, bgColor);
+    Shader *whittedshader = new WhittedShader(intersectionColor, 10.0f, bgColor);
     //(... normal, whitted) ...
 
   
@@ -253,7 +255,10 @@ int main()
     //raytrace(cam, depthshader, film, myScene.objectsList, myScene.LightSourceList);
 
     //TASK4
-    raytrace(cam, normalshader, film, myScene.objectsList, myScene.LightSourceList);
+    //raytrace(cam, normalshader, film, myScene.objectsList, myScene.LightSourceList);
+
+    //TASK5
+    raytrace(cam, whittedshader, film, myScene.objectsList, myScene.LightSourceList);
 
     auto stop = high_resolution_clock::now();
 

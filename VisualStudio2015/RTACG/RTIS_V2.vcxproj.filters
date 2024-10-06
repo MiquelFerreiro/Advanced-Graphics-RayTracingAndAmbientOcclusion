@@ -114,6 +114,9 @@
     <ClCompile Include="..\..\src\shaders\normalshader.cpp">
       <Filter>src\shaders</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\shaders\whittedshader.cpp">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\cameras\camera.h">
@@ -198,6 +201,9 @@
       <Filter>src\lightsources</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\shaders\normalshader.h">
+      <Filter>src\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\shaders\whittedshader.h">
       <Filter>src\shaders</Filter>
     </ClInclude>
   </ItemGroup>
