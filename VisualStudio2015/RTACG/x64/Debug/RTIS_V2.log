@@ -1,3 +1,2 @@
 ﻿  whittedshader.cpp
-C:\Users\paqui\OneDrive\Escritorio\MIQUEL\UPF\4o\AG\RTACG_Students\src\shaders\whittedshader.cpp(87): warning C4715: 'WhittedShader::computeColor': no todas las rutas de acceso de control devuelven un valor
   RTIS_V2.vcxproj -> C:\Users\paqui\OneDrive\Escritorio\MIQUEL\UPF\4o\AG\RTACG_Students\VisualStudio2015\RTACG\x64\Debug\RT_ACG.exe

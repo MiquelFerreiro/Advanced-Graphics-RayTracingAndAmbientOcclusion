@@ -15,14 +15,11 @@ Vector3D WhittedShader::computeColor(const Ray& r, const std::vector<Shape*>& ob
 {
     
     Intersection its;
+    Vector3D direct_illumination = Vector3D(0.0, 0.0, 0.0);
 
     if (Utils::getClosestIntersection(r, objList, its)) {
 
         if (!its.shape->getMaterial().hasSpecular()) {
-
-
-
-            Vector3D direct_illumination = Vector3D(0.0, 0.0, 0.0);
 
             for (int s = 0; s < lsList.size(); s++) {
 
@@ -44,44 +41,23 @@ Vector3D WhittedShader::computeColor(const Ray& r, const std::vector<Shape*>& ob
 
             direct_illumination = direct_illumination + ambient_light * its.shape->getMaterial().getDiffuseReflectance();
 
-            return direct_illumination;
-
 
         }
         else {
-
-            Vector3D direct_illumination = Vector3D(0.0, 0.0, 0.0);
 
             Vector3D wr = (its.normal.normalized() * 2 * dot(-r.d.normalized(), its.normal.normalized()) - (-r.d)).normalized();
 
             Ray reflected_ray = Ray(its.itsPoint, wr);
 
-            Intersection its2;
-
-            Utils::getClosestIntersection(reflected_ray, objList, its2);
+            Utils::getClosestIntersection(reflected_ray, objList, its);
                 
-            for (int s = 0; s < lsList.size(); s++) {
-
-                Vector3D wi = (lsList[s]->sampleLightPosition() - its2.itsPoint).normalized();
-
-                double visibility = 1.0;
-
-                Vector3D lightDirection = (its2.itsPoint - lsList[s]->sampleLightPosition()).normalized();
-                Ray LightToPoint = Ray(lsList[s]->sampleLightPosition(), lightDirection, 0, Epsilon, (its2.itsPoint - lsList[s]->sampleLightPosition()).length() - Epsilon);
-
-                if (Utils::hasIntersection(LightToPoint, objList)) {
-                    visibility = 0.0;
-                }
-
-                Vector3D current_illumination = lsList[s]->getIntensity() * its2.shape->getMaterial().getReflectance(its2.normal, wi, -r.d) * dot(wi, its2.normal) * visibility;
-
-                direct_illumination += current_illumination;
-            }
-
-            direct_illumination = direct_illumination + ambient_light * its2.shape->getMaterial().getDiffuseReflectance();
-
-            return direct_illumination;
-
+            direct_illumination = WhittedShader::computeColor(reflected_ray, objList, lsList);
         }
+
+        return direct_illumination;
+    }
+
+    else {
+        return bgColor;
     }
 }
