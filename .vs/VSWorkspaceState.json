@@ -2,12 +2,14 @@
   "ExpandedNodes": [
     "",
     "\\src",
+    "\\src\\core",
     "\\src\\lightsources",
     "\\src\\materials",
     "\\src\\shaders",
+    "\\src\\shapes",
     "\\VisualStudio2015",
     "\\VisualStudio2015\\RTACG"
   ],
-  "SelectedNode": "\\VisualStudio2015\\RTACG\\RT_ACG.sln",
+  "SelectedNode": "\\src\\main.cpp",
   "PreviewInSolutionExplorer": false
 }

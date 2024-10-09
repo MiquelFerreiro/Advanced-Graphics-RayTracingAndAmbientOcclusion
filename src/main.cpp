@@ -23,6 +23,7 @@
 #include "materials/phong.h"
 #include "materials/emissive.h"
 #include "materials/mirror.h"
+#include "materials/transmissive.h"
 
 #include <chrono>
 
@@ -56,8 +57,8 @@ void buildSceneCornellBox(Camera*& cam, Film*& film,
     Material* mirror = new Mirror(Vector3D(0.2, 0.8, 0.8), Vector3D(0, 0, 0), 100);
 
     //Task 5.4
-    //Material* transmissive = new Transmissive(0.7);
-
+    Material* transmissive = new Transmissive(0.7);
+    
 
     /* ******* */
     /* Objects */
@@ -86,8 +87,11 @@ void buildSceneCornellBox(Camera*& cam, Film*& film,
 
     Matrix4x4 sphereTransform2;
     sphereTransform2 = Matrix4x4::translate(Vector3D(-1.5, -offset + 3*radius, 4));
-    Shape* s2 = new Sphere(radius, sphereTransform2, blueGlossy_80);
 
+    Shape* s2 = new Sphere(radius, sphereTransform2, blueGlossy_80);
+    //Shape* s2 = new Sphere(radius, sphereTransform2, transmissive);
+
+ 
     Shape* square = new Square(Vector3D(offset + 0.999, -offset-0.2, 3.0), Vector3D(0.0, 4.0, 0.0), Vector3D(0.0, 0.0, 2.0), Vector3D(-1.0, 0.0, 0.0), mirror);
 
     myScene.AddObject(s1);
@@ -230,7 +234,7 @@ int main()
     Shader *depthshader = new DepthShader (intersectionColor,10.0f, bgColor);
     Shader *normalshader = new NormalShader(intersectionColor, 10.0f, bgColor);
     Shader *whittedshader = new WhittedShader(intersectionColor, 10.0f, bgColor, ambientLight);
-    //(... normal, whitted) ...
+ 
 
   
 
@@ -241,12 +245,12 @@ int main()
     Scene myScene;
     //Create Scene Geometry and Illumiantion
     //buildSceneSphere(cam, film, myScene); //Task 2,3,4;
-    buildSceneCornellBox(cam, film, myScene); //Task 5
+    //buildSceneCornellBox(cam, film, myScene); //Task 5
 
     //---------------------------------------------------------------------------
 
     //Paint Image ONLY TASK 1
-    //PaintImage(film);
+    PaintImage(film);
 
     // Launch some rays! TASK 2,3,...   
     auto start = high_resolution_clock::now();
@@ -261,11 +265,9 @@ int main()
     //raytrace(cam, normalshader, film, myScene.objectsList, myScene.LightSourceList);
 
     //TASK5
-    raytrace(cam, whittedshader, film, myScene.objectsList, myScene.LightSourceList);
+    //raytrace(cam, whittedshader, film, myScene.objectsList, myScene.LightSourceList);
 
     auto stop = high_resolution_clock::now();
-
-    
 
     // Save the final result to file
     std::cout << "\n\nSaving the result to file output.bmp\n" << std::endl;

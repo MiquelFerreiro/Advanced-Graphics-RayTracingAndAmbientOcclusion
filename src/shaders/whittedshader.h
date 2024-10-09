@@ -20,4 +20,4 @@ private:
     Vector3D ambient_light;
 };
 
-#endif // NORMALSHADER_H
+#endif // WHITTEDSHADER_H

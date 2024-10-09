@@ -2,6 +2,8 @@
 
 #include "../core/utils.h"
 
+#include "../materials/transmissive.h"
+
 WhittedShader::WhittedShader() :
     color(Vector3D(1, 0, 0))
 { }
@@ -17,9 +19,48 @@ Vector3D WhittedShader::computeColor(const Ray& r, const std::vector<Shape*>& ob
     Intersection its;
     Vector3D direct_illumination = Vector3D(0.0, 0.0, 0.0);
 
-    if (Utils::getClosestIntersection(r, objList, its)) {
+    int neg_sqrt = 0;
 
-        if (!its.shape->getMaterial().hasSpecular()) {
+    if (Utils::getClosestIntersection(r, objList, its)) {
+        /*
+        if (its.shape->getMaterial().hasTransmission()) {
+            
+            float raiz = 1 - pow(0.7, 2) * (1 - pow(dot(its.normal.normalized(), (r.o - its.itsPoint).normalized()), 2));
+
+            if (raiz >= 0) {
+
+                Vector3D wt = Transmissive::getTransmissiveRefraction(0.7, its.normal, (r.o - its.itsPoint).normalized());
+                
+                Ray reflected_ray = Ray(its.itsPoint, wt);
+
+                Utils::getClosestIntersection(reflected_ray, objList, its);
+
+                direct_illumination = WhittedShader::computeColor(reflected_ray, objList, lsList);
+
+            }
+            else {;
+
+                neg_sqrt = 1;
+
+            }
+
+        }
+        */
+        if (its.shape->getMaterial().hasSpecular() || neg_sqrt == 1) {
+
+        Vector3D wr = (its.normal.normalized() * 2 * dot(-r.d.normalized(), its.normal.normalized()) - (-r.d)).normalized();
+
+        Ray reflected_ray = Ray(its.itsPoint, wr);
+
+        Utils::getClosestIntersection(reflected_ray, objList, its);
+
+        direct_illumination = WhittedShader::computeColor(reflected_ray, objList, lsList); 
+
+        neg_sqrt = 1;
+     
+        }
+
+        if (neg_sqrt == 0) {
 
             for (int s = 0; s < lsList.size(); s++) {
 
@@ -40,18 +81,6 @@ Vector3D WhittedShader::computeColor(const Ray& r, const std::vector<Shape*>& ob
             }
 
             direct_illumination = direct_illumination + ambient_light * its.shape->getMaterial().getDiffuseReflectance();
-
-
-        }
-        else {
-
-            Vector3D wr = (its.normal.normalized() * 2 * dot(-r.d.normalized(), its.normal.normalized()) - (-r.d)).normalized();
-
-            Ray reflected_ray = Ray(its.itsPoint, wr);
-
-            Utils::getClosestIntersection(reflected_ray, objList, its);
-                
-            direct_illumination = WhittedShader::computeColor(reflected_ray, objList, lsList);
         }
 
         return direct_illumination;
