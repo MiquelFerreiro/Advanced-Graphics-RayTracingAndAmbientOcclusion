@@ -14,10 +14,14 @@ public:
         const std::vector<Shape*>& objList,
         const std::vector<LightSource*>& lsList) const;
 
+    double getRatioRefraction() const;
+
+
 private:
     double maxDist;
     Vector3D color;
     Vector3D ambient_light;
+    double ratio_ref = 0.7;
 };
 
 #endif // WHITTEDSHADER_H
