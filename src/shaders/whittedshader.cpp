@@ -17,76 +17,89 @@ Vector3D WhittedShader::computeColor(const Ray& r, const std::vector<Shape*>& ob
 {
     
     Intersection its;
-    Vector3D direct_illumination = Vector3D(0.0, 0.0, 0.0);
-
-    int neg_sqrt = 0;
+    Vector3D direct_illumination = Vector3D(0.0);
 
     if (Utils::getClosestIntersection(r, objList, its)) {
-        /*
+        
+        //TRANSMISSIVE MATERIAL
+
+        bool isTotalInternalReflection = false;
+
         if (its.shape->getMaterial().hasTransmission()) {
-            
-            float raiz = 1 - pow(0.7, 2) * (1 - pow(dot(its.normal.normalized(), (r.o - its.itsPoint).normalized()), 2));
 
-            if (raiz >= 0) {
+            double ratio_ref = 0.7;
 
-                Vector3D wt = Transmissive::getTransmissiveRefraction(0.7, its.normal, (r.o - its.itsPoint).normalized());
+            Vector3D n = its.normal.normalized();
+            Vector3D wo = (-r.d).normalized();
+
+            if (dot(its.normal.normalized(), r.d.normalized()) > 0) {
+                ratio_ref = 1 / ratio_ref;
+                n *= -1;
+            }
+
+            double raiz = 1 - pow(0.7, 2) * (1 - pow(dot(n, (-r.d).normalized()), 2));
+
+            if (raiz >= 0.0) {
                 
-                Ray reflected_ray = Ray(its.itsPoint, wt);
-
-                Utils::getClosestIntersection(reflected_ray, objList, its);
+                Vector3D wt = - wo * ratio_ref + dot(n, (ratio_ref)*dot(n, wo) - sqrt(raiz));
+                
+                Ray reflected_ray = Ray(its.itsPoint, wt, Epsilon, 0, INFINITY);
 
                 direct_illumination = WhittedShader::computeColor(reflected_ray, objList, lsList);
 
-            }
-            else {;
+                
+                return direct_illumination;
 
-                neg_sqrt = 1;
+            }
+            else {
+                
+                return Vector3D(1.0);
+                isTotalInternalReflection = true;
 
             }
 
         }
-        */
-        if (its.shape->getMaterial().hasSpecular() || neg_sqrt == 1) {
+        
+        //MIRROR MATERIAL
+
+        if (its.shape->getMaterial().hasSpecular() || isTotalInternalReflection) {
 
         Vector3D wr = (its.normal.normalized() * 2 * dot(-r.d.normalized(), its.normal.normalized()) - (-r.d)).normalized();
 
-        Ray reflected_ray = Ray(its.itsPoint, wr);
-
-        Utils::getClosestIntersection(reflected_ray, objList, its);
+        Ray reflected_ray = Ray(its.itsPoint, wr, Epsilon, 0, INFINITY);
 
         direct_illumination = WhittedShader::computeColor(reflected_ray, objList, lsList); 
 
-        neg_sqrt = 1;
+        return direct_illumination;
      
         }
 
-        if (neg_sqrt == 0) {
 
-            for (int s = 0; s < lsList.size(); s++) {
+        //PHONG MATERIAL
 
-                Vector3D wi = (lsList[s]->sampleLightPosition() - its.itsPoint).normalized();
+        for (int s = 0; s < lsList.size(); s++) {
 
-                double visibility = 1.0;
+            Vector3D wi = (lsList[s]->sampleLightPosition() - its.itsPoint).normalized();
 
-                Vector3D lightDirection = (its.itsPoint - lsList[s]->sampleLightPosition()).normalized();
-                Ray LightToPoint = Ray(lsList[s]->sampleLightPosition(), lightDirection, 0, Epsilon, (its.itsPoint - lsList[s]->sampleLightPosition()).length() - Epsilon);
+            double visibility = 1.0;
 
-                if (Utils::hasIntersection(LightToPoint, objList)) {
-                    visibility = 0.0;
-                }
+            Vector3D lightDirection = (its.itsPoint - lsList[s]->sampleLightPosition()).normalized();
+            Ray LightToPoint = Ray(lsList[s]->sampleLightPosition(), lightDirection, 0, Epsilon, (its.itsPoint - lsList[s]->sampleLightPosition()).length() - Epsilon);
 
-                Vector3D current_illumination = lsList[s]->getIntensity() * its.shape->getMaterial().getReflectance(its.normal, wi, -r.d) * dot(wi, its.normal) * visibility;
-
-                direct_illumination += current_illumination;
+            if (Utils::hasIntersection(LightToPoint, objList)) {
+                visibility = 0.0;
             }
 
-            direct_illumination = direct_illumination + ambient_light * its.shape->getMaterial().getDiffuseReflectance();
+            Vector3D current_illumination = lsList[s]->getIntensity() * its.shape->getMaterial().getReflectance(its.normal, wi, -r.d) * dot(wi, its.normal) * visibility;
+
+            direct_illumination += current_illumination;
         }
 
+        direct_illumination = direct_illumination + ambient_light * its.shape->getMaterial().getDiffuseReflectance();
+
         return direct_illumination;
+
     }
 
-    else {
-        return bgColor;
-    }
+    return bgColor;
 }

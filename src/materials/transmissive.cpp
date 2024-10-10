@@ -35,14 +35,15 @@ Vector3D Transmissive::getDiffuseReflectance() const
     return Vector3D(0.0);
 }
 
-Vector3D Transmissive::getTransmissiveRefraction(float idx_ref, Vector3D n, Vector3D wo) {
 
-    float raiz = 1 - pow(idx_ref, 2) * (1 - pow(dot(n, wo), 2));
-
-    Vector3D wt = dot(-idx_ref, wo) + dot(n, (idx_ref)*dot(n, wo) - sqrt(raiz));
-
-    return wt;
-
-}
+//Vector3D Transmissive::getTransmissiveRefraction(double idx_ref, Vector3D n, Vector3D wo) {
+//
+//    float raiz = 1 - pow(idx_ref, 2) * (1 - pow(dot(n, wo), 2));
+//
+//    Vector3D wt = - wo * idx_ref  + dot(n, (idx_ref)*dot(n, wo) - sqrt(raiz));
+//
+//    return wt;
+//
+//}
 
 

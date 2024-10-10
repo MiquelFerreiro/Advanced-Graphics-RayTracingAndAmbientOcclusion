@@ -21,7 +21,7 @@ public:
     Vector3D getEmissiveRadiance() const;
     Vector3D getDiffuseReflectance() const;
 
-    static Vector3D getTransmissiveRefraction(float idx_ref, Vector3D n, Vector3D wo);
+    //static Vector3D getTransmissiveRefraction(double idx_ref, Vector3D n, Vector3D wo);
 
 
 private:
