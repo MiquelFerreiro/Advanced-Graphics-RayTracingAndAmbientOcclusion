@@ -44,24 +44,16 @@ Vector3D Hemispherical::computeColor(const Ray& r, const std::vector<Shape*>& ob
         Ray x_to_light = Ray(x, wi);
 
         Utils::getClosestIntersection(x_to_light, objList, its_y);
-
-        Material* mat;
-
-        float Xs[] = { its_y.itsPoint.x, its_y.itsPoint.y, its_y.itsPoint.z };
-        float Ns[] = { its_y.normal.x, its_y.normal.y, its_y.normal.z };
         
-        Vector3D radiance;
+        Vector3D radiance(0.0);
 
-        Vector3D reflectance;
+        Vector3D reflectance(0.0);
 
-        if ((Xs[0] == 0.0 && Xs[1] == 0.0 && Xs[2] == 0.0) &&
-            (Ns[0] == 0.0 && Ns[1] == 0.0 && Ns[2] == 0.0)) {
+        if ( its_y.itsPoint.x == 0.0) {
 
-            mat = new Emissive(Vector3D(25, 25, 25), Vector3D(0.5));
+            Vector3D radiance = Vector3D(25);
 
-            Vector3D radiance = mat->getEmissiveRadiance();
-
-            Vector3D reflectance = mat->getReflectance(n, wo, wi);
+            Vector3D reflectance = Vector3D(0.5) / 3.1416f;
         }
         else {
             Vector3D radiance = its_y.shape->getMaterial().getEmissiveRadiance();
