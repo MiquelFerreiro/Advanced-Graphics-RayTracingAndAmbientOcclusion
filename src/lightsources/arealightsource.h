@@ -3,6 +3,7 @@
 
 #include "../shapes/square.h"
 #include "lightsource.h"
+#include "../core/utils.h"
 
 
 class AreaLightSource : public LightSource

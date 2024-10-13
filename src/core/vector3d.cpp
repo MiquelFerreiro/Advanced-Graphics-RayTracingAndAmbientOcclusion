@@ -40,7 +40,6 @@ Vector3D Vector3D::operator*(const double a) const
     return Vector3D(x*a, y*a, z*a);
 }
 
-
 Vector3D Vector3D::operator*(const Vector3D a) const
 {
     return Vector3D(x * a.x, y * a.y, z * a.z);

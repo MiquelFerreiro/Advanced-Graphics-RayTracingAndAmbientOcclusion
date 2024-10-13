@@ -18,6 +18,7 @@
 #include "shaders/depthshader.h"
 #include "shaders/normalshader.h"
 #include "shaders/whittedshader.h"
+#include "shaders/hemispherical.h"
 
 
 #include "materials/phong.h"
@@ -30,7 +31,6 @@
 using namespace std::chrono;
 
 typedef std::chrono::duration<double, std::milli> durationMs;
-
 
 void buildSceneCornellBox(Camera*& cam, Film*& film,
     Scene myScene)
@@ -49,16 +49,13 @@ void buildSceneCornellBox(Camera*& cam, Film*& film,
     Material* redDiffuse = new Phong(Vector3D(0.7, 0.2, 0.3), Vector3D(0, 0, 0), 100);
     Material* greenDiffuse = new Phong(Vector3D(0.2, 0.7, 0.3), Vector3D(0, 0, 0), 100);
     Material* greyDiffuse = new Phong(Vector3D(0.8, 0.8, 0.8), Vector3D(0, 0, 0), 100);      
-    Material* blueGlossy_20 = new Phong(Vector3D(0.2, 0.3, 0.8), Vector3D(0.8, 0.8, 0.8), 20);
-    Material* blueGlossy_80 = new Phong(Vector3D(0.2, 0.3, 0.8), Vector3D(0.8, 0.8, 0.8), 80);
+    Material* blueGlossy_20 = new Phong(Vector3D(0.2, 0.3, 0.8), Vector3D(0.2, 0.2, 0.2), 20);
+    Material* blueGlossy_80 = new Phong(Vector3D(0.2, 0.3, 0.8), Vector3D(0.2, 0.2, 0.2), 80);
     Material* cyandiffuse = new Phong(Vector3D(0.2, 0.8, 0.8), Vector3D(0, 0, 0), 100);
+    Material* emissive = new Emissive(Vector3D(25, 25, 25), Vector3D(0.5));
 
-    //Task 5.3
-    Material* mirror = new Mirror(Vector3D(0.2, 0.8, 0.8), Vector3D(0, 0, 0), 100);
-
-    //Task 5.4
+    Material* mirror = new Mirror();
     Material* transmissive = new Transmissive(0.7);
-    
 
     /* ******* */
     /* Objects */
@@ -71,36 +68,32 @@ void buildSceneCornellBox(Camera*& cam, Film*& film,
     Shape* topPlan = new InfinitePlan(Vector3D(0, offset, 0), Vector3D(0, -1, 0), greyDiffuse);
     Shape* bottomPlan = new InfinitePlan(Vector3D(0, -offset, 0), Vector3D(0, 1, 0), greyDiffuse);
     Shape* backPlan = new InfinitePlan(Vector3D(0, 0, 3 * offset), Vector3D(0, 0, -1), greyDiffuse);
+    Shape* square_emissive = new Square(Vector3D(-1.0, 3.0, 3.0), Vector3D(2.0, 0.0, 0.0), Vector3D(0.0, 0.0, 2.0), Vector3D(0.0, -1.0, 0.0), emissive);
+
 
     myScene.AddObject(leftPlan);
     myScene.AddObject(rightPlan);
     myScene.AddObject(topPlan);
     myScene.AddObject(bottomPlan);
     myScene.AddObject(backPlan);
+    myScene.AddObject(square_emissive);
 
-    // Place the Spheres and square inside the Cornell Box
+
+    // Place the Spheres inside the Cornell Box
     double radius = 1;         
     Matrix4x4 sphereTransform1;
     sphereTransform1 = Matrix4x4::translate(Vector3D(1.5, -offset + radius, 6));
+    Shape* s1 = new Sphere(radius, sphereTransform1, blueGlossy_20); 
 
     Matrix4x4 sphereTransform2;
-    sphereTransform2 = Matrix4x4::translate(Vector3D(-1.5, -offset + 3 * radius, 4));
-
-    Shape* s1 = new Sphere(radius, sphereTransform1, blueGlossy_20);
-    //Shape* s1 = new Sphere(radius, sphereTransform1, transmissive);
-
-    //Shape* s2 = new Sphere(radius, sphereTransform2, blueGlossy_80);
+    sphereTransform2 = Matrix4x4::translate(Vector3D(-1.5, -offset + 3*radius, 4));
     Shape* s2 = new Sphere(radius, sphereTransform2, transmissive);
 
-    //Shape* square = new Square(Vector3D(offset + 0.999, -offset - 0.2, 3.0), Vector3D(0.0, 4.0, 0.0), Vector3D(0.0, 0.0, 2.0), Vector3D(-1.0, 0.0, 0.0), cyandiffuse);
     Shape* square = new Square(Vector3D(offset + 0.999, -offset-0.2, 3.0), Vector3D(0.0, 4.0, 0.0), Vector3D(0.0, 0.0, 2.0), Vector3D(-1.0, 0.0, 0.0), mirror);
 
     myScene.AddObject(s1);
     myScene.AddObject(s2);
     myScene.AddObject(square);
-
-    PointLightSource* myPointLight = new PointLightSource(Vector3D(0, 2.5, 3.0), Vector3D(2.0));
-    myScene.AddPointLight(myPointLight);
 
 }
 
@@ -235,6 +228,11 @@ int main()
     Shader *depthshader = new DepthShader (intersectionColor,10.0f, bgColor);
     Shader *normalshader = new NormalShader(intersectionColor, 10.0f, bgColor);
     Shader *whittedshader = new WhittedShader(intersectionColor, 10.0f, bgColor, ambientLight);
+
+
+    //Lab 2 Part 1
+
+    Shader* hemispherical = new Hemispherical(intersectionColor, 10.0f, bgColor, ambientLight);
  
 
   
@@ -257,17 +255,21 @@ int main()
     // Launch some rays! TASK 2,3,...   
     auto start = high_resolution_clock::now();
 
-    //TASK 2
-    //raytrace(cam, shader, film, myScene.objectsList, myScene.LightSourceList);
+    // Lab 1
+    {
+        //TASK 2
+        //raytrace(cam, shader, film, myScene.objectsList, myScene.LightSourceList);
+        //TASK3
+        //raytrace(cam, depthshader, film, myScene.objectsList, myScene.LightSourceList);
+        //TASK4
+        //raytrace(cam, normalshader, film, myScene.objectsList, myScene.LightSourceList);
+        //TASK5
+        //raytrace(cam, whittedshader, film, myScene.objectsList, myScene.LightSourceList);
+    }
 
-    //TASK3
-    //raytrace(cam, depthshader, film, myScene.objectsList, myScene.LightSourceList);
-
-    //TASK4
-    //raytrace(cam, normalshader, film, myScene.objectsList, myScene.LightSourceList);
-
-    //TASK5
-    raytrace(cam, whittedshader, film, myScene.objectsList, myScene.LightSourceList);
+    // Lab 2 Part 1
+    
+    raytrace(cam, hemispherical, film, myScene.objectsList, myScene.LightSourceList);
 
     auto stop = high_resolution_clock::now();
 
