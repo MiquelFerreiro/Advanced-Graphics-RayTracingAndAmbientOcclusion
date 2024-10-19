@@ -92,7 +92,7 @@ Vector3D WhittedShader::computeColor(const Ray& r, const std::vector<Shape*>& ob
                     visibility = 0.0;
                 }
 
-                Vector3D current_illumination = lsList[s]->getIntensity() * its.shape->getMaterial().getReflectance(its.normal, wi, -r.d) * dot(wi, its.normal) * visibility;
+                Vector3D current_illumination = lsList[s]->getIntensity() * its.shape->getMaterial().getReflectance(its.normal, -r.d, wi) * dot(wi, its.normal) * visibility;
 
                 direct_illumination += current_illumination;
             }
