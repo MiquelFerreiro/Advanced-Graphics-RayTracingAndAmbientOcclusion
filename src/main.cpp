@@ -20,6 +20,7 @@
 #include "shaders/whittedshader.h"
 #include "shaders/hemispherical.h"
 #include "shaders/areadirectshader.h"
+#include "shaders/pathtracershader.h"
 
 
 #include "materials/phong.h"
@@ -90,11 +91,11 @@ void buildSceneCornellBox(Camera*& cam, Film*& film,
     Matrix4x4 sphereTransform2;
     sphereTransform2 = Matrix4x4::translate(Vector3D(-1.5, -offset + 3*radius, 4));
 
-    Shape* s2 = new Sphere(radius, sphereTransform2, transmissive);
-    //Shape* s2 = new Sphere(radius, sphereTransform2, blueGlossy_80);
+    //Shape* s2 = new Sphere(radius, sphereTransform2, transmissive);
+    Shape* s2 = new Sphere(radius, sphereTransform2, blueGlossy_80);
 
-    Shape* square = new Square(Vector3D(offset + 0.999, -offset-0.2, 3.0), Vector3D(0.0, 4.0, 0.0), Vector3D(0.0, 0.0, 2.0), Vector3D(-1.0, 0.0, 0.0), mirror);
-    //Shape* square = new Square(Vector3D(offset + 0.999, -offset - 0.2, 3.0), Vector3D(0.0, 4.0, 0.0), Vector3D(0.0, 0.0, 2.0), Vector3D(-1.0, 0.0, 0.0), cyandiffuse);
+    //Shape* square = new Square(Vector3D(offset + 0.999, -offset-0.2, 3.0), Vector3D(0.0, 4.0, 0.0), Vector3D(0.0, 0.0, 2.0), Vector3D(-1.0, 0.0, 0.0), mirror);
+    Shape* square = new Square(Vector3D(offset + 0.999, -offset - 0.2, 3.0), Vector3D(0.0, 4.0, 0.0), Vector3D(0.0, 0.0, 2.0), Vector3D(-1.0, 0.0, 0.0), cyandiffuse);
 
     myScene.AddObject(s1);
     myScene.AddObject(s2);
@@ -233,13 +234,17 @@ int main()
     Shader *depthshader = new DepthShader (intersectionColor,10.0f, bgColor);
     Shader *normalshader = new NormalShader(intersectionColor, 10.0f, bgColor);
     Shader *whittedshader = new WhittedShader(intersectionColor, 10.0f, bgColor, ambientLight);
-
+    
 
     //Lab 2 Part 1
 
     Shader* hemispherical = new Hemispherical(intersectionColor, 10.0f, bgColor, ambientLight, 32);
 
     Shader* areadirectshader = new AreaDirectShader(intersectionColor, 10.0f, bgColor, ambientLight, 32);
+
+    //Lab 2 Part 2
+
+    Shader* pathtracershader = new PathTracerShader(0.7, 4, 16);
  
 
   
@@ -278,7 +283,11 @@ int main()
     
     //raytrace(cam, hemispherical, film, myScene.objectsList, myScene.LightSourceList);
 
-    raytrace(cam, areadirectshader, film, myScene.objectsList, myScene.LightSourceList);
+    //raytrace(cam, areadirectshader, film, myScene.objectsList, myScene.LightSourceList);
+
+    // Lab 2 Part 1
+
+    raytrace(cam, pathtracershader, film, myScene.objectsList, myScene.LightSourceList);
 
     auto stop = high_resolution_clock::now();
 
