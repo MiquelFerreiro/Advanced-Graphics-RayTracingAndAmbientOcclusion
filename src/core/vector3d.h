@@ -26,6 +26,19 @@ struct Vector3D
     Vector3D& operator*=(const double a);
     Vector3D& operator/=(const double a);
 
+    //custom
+
+    bool operator==(const Vector3D& other) const {
+        // Consider vectors equal if all components are equal
+        return (x == other.x && y == other.y && z == other.z);
+    }
+
+    bool operator!=(const Vector3D& other) const {
+        // Optional: inequality operator to compare if two vectors are not equal
+        return !(*this == other);
+    }
+
+
     // Member functions
     double length()      const;
     Vector3D v_abs()      const;

@@ -16,13 +16,15 @@ double PathTracerShader::getRatioRefraction() const {
     return ratio_ref;
 }
 
-Vector3D PathTracerShader::DirectLight(const Ray& r, const std::vector<Shape*>& objList, const std::vector<LightSource*>& lsList) const {
+Intersection PathTracerShader::GetLastIntersection(const Ray& r, const std::vector<Shape*>& objList, const std::vector<LightSource*>& lsList) const {
+
+    if (r.depth > 5) {
+        return Intersection();
+    }
+
+    Intersection final_its;
 
     Intersection its;
-
-    Intersection its_y;
-
-    Vector3D direct_illumination = Vector3D((double)0.0);
 
     Utils::getClosestIntersection(r, objList, its);
 
@@ -52,9 +54,11 @@ Vector3D PathTracerShader::DirectLight(const Ray& r, const std::vector<Shape*>& 
 
                 Vector3D wt = -wo * ratio_ref + n * ((ratio_ref)*dot(n, wo) - sqrt(raiz));
 
-                Ray reflected_ray = Ray(its.itsPoint, wt);
+                Ray reflected_ray = Ray(its.itsPoint, wt, r.depth + 1);
 
-                return PathTracerShader::DirectLight(reflected_ray, objList, lsList);
+                final_its = PathTracerShader::GetLastIntersection(reflected_ray, objList, lsList);
+
+                return final_its;
 
             }
             else {
@@ -71,86 +75,68 @@ Vector3D PathTracerShader::DirectLight(const Ray& r, const std::vector<Shape*>& 
 
         Vector3D wr = (n * 2 * dot(wo, n) - wo).normalized();
 
-        Ray reflected_ray = Ray(its.itsPoint, wr);
+        Ray reflected_ray = Ray(its.itsPoint, wr, r.depth + 1);
 
-        return PathTracerShader::DirectLight(reflected_ray, objList, lsList);
+        final_its = PathTracerShader::GetLastIntersection(reflected_ray, objList, lsList);
+
+        return final_its;
     }
 
     //PHONG
 
-    for (int idx = 0; idx < N_vectors; idx++) {
+    final_its = its;
 
-        Vector3D random_light_pos = lsList[0]->sampleLightPosition();
-
-        Vector3D random_vector = (random_light_pos - x).normalized();
-
-        Ray x_to_point = Ray(x, random_vector.normalized(), (random_light_pos - x).length() - Epsilon);
-
-        Vector3D radiance(0.0);
-
-        Vector3D reflectance(0.0);
-
-        if (Utils::getClosestIntersection(x_to_point, objList, its_y)) {
-
-            radiance = its_y.shape->getMaterial().getEmissiveRadiance();
-
-            reflectance = its.shape->getMaterial().getReflectance(n, wo, random_vector);
-
-            double prob_wi = 1 / lsList[0]->getArea();
-
-            Vector3D ny = its_y.normal;
-
-            Vector3D G = (dot(n, random_vector) * dot(-random_vector, ny)) / pow((random_light_pos - x).length(), 2);
-
-            direct_illumination += (radiance * reflectance * G) / (double)prob_wi;
-
-        }
-
-    }
-
-    direct_illumination = direct_illumination / (double)N_vectors;
-
-    return direct_illumination;
+    return final_its;
 
 }
 
 Vector3D PathTracerShader::computeColor(const Ray& r, const std::vector<Shape*>& objList, const std::vector<LightSource*>& lsList) const
 {
 
-    Vector3D illumination = PathTracerShader::DirectLight(r, objList, lsList);
+    Vector3D illumination = Vector3D(0.0);
 
-    Intersection its;
+    Intersection last_its = PathTracerShader::GetLastIntersection(r, objList, lsList);
 
-    Intersection its2;
+    if (last_its.itsPoint != Vector3D(0.0) && last_its.normal != Vector3D(0.0)) {
 
-    HemisphericalSampler hem_sampler;
+        illumination += last_its.shape->getMaterial().getEmissiveRadiance();
 
-    if (Utils::getClosestIntersection(r, objList, its)) {
+        Vector3D sum_radiance = Vector3D(0.0);
 
-        Vector3D x = its.itsPoint;
+        Intersection its;
 
-        Vector3D n = its.normal;
-
-        Vector3D random_vector = hem_sampler.getSample(n).normalized();
+        HemisphericalSampler hem_sampler;
 
         if (r.depth < MaxDepth) {
 
-            Ray newR = Ray(x, random_vector, r.depth + 1);
+            for (int idx = 0; idx < N_vectors; idx++) {
 
-            if (Utils::getClosestIntersection(newR, objList, its2)) {
+                Vector3D x = last_its.itsPoint;
 
-                illumination += PathTracerShader::computeColor(newR, objList, lsList) * its.shape->getMaterial().getReflectance(n, -r.d, random_vector) * dot(n, random_vector) * (2 * 3.1416);
+                Vector3D n = last_its.normal;
 
+                Vector3D wo = -r.d;
+
+                Vector3D wi = hem_sampler.getSample(n).normalized();
+
+                double pdf = 1 / (2 * 3.1416);
+
+                Ray newR = Ray(x, wi, r.depth + 1);
+
+                if (Utils::getClosestIntersection(newR, objList, its)) {
+
+                    sum_radiance += PathTracerShader::computeColor(newR, objList, lsList) * last_its.shape->getMaterial().getReflectance(n, wo, wi) * dot(n, wi) / pdf;
+
+                }
             }
-        
+
+            sum_radiance /= (double)(N_vectors);  //Average de vectores random
+
+            illumination += sum_radiance;
         }
+
     }
 
-    Vector3D Le = Vector3D(0.0);
-
-    if (r.depth == 0) {
-        illumination += its.shape->getMaterial().getEmissiveRadiance();
-    }
 
     return illumination;
  
