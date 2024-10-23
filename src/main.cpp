@@ -245,9 +245,9 @@ int main()
 
     //Lab 2 Part 2
 
-    Shader* pathtracershader = new PathTracerShader(0.7, 3, 8);
+    Shader* pathtracershader = new PathTracerShader(0.7, 2, 64);
 
-    Shader* neeshader = new NEEShader(0.7, 2, 16);
+    Shader* neeshader = new NEEShader(0.7, 4, 64);
 
     // Build the scene---------------------------------------------------------
     // 

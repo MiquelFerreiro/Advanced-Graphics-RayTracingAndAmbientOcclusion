@@ -137,7 +137,5 @@ Vector3D PathTracerShader::computeColor(const Ray& r, const std::vector<Shape*>&
 
     }
 
-
     return illumination;
- 
 }
