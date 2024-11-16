@@ -1,7 +1,1 @@
-﻿  main.cpp
-C:\RTACG_Students\src\main.cpp(301,21): warning C4244: 'inicializando': conversión de '_Rep' a 'float'; posible pérdida de datos
-          with
-          [
-              _Rep=double
-          ]
-  RTIS_V2.vcxproj -> C:\RTACG_Students\VisualStudio2015\RTACG\x64\Debug\RT_ACG.exe
+﻿

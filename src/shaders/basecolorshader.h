@@ -9,10 +9,8 @@ public:
 
     BaseColorShader(Vector3D bgColor_);
 
-    virtual Vector3D computeColor(const Ray &r,
-                             const std::vector<Shape*> &objList,
-                             const std::vector<LightSource*> &lsList) const;
-   
+    virtual Vector3D computeColor(const Ray& r, const std::vector<Shape*>& objList, const std::vector<LightSource*>& lsList) const;
+
 };
 
 #endif // BASECOLORSHADER_H

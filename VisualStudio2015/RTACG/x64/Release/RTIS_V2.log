@@ -1,1 +1,66 @@
-﻿  RTIS_V2.vcxproj -> C:\ACG\RTACG_Students\VisualStudio2015\RTACG\x64\Release\RT_ACG.exe
+﻿  camera.cpp
+  ortographic.cpp
+  perspective.cpp
+  bitmap.cpp
+  eqsolver.cpp
+  film.cpp
+C:\ACG\RTACG_Students\src\core\tinyexr.h(13213,28): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+C:\ACG\RTACG_Students\src\core\film.cpp(87,25): warning C4267: '=': conversión de 'size_t' a 'unsigned int'; posible pérdida de datos
+C:\ACG\RTACG_Students\src\core\film.cpp(88,27): warning C4267: '=': conversión de 'size_t' a 'unsigned int'; posible pérdida de datos
+C:\ACG\RTACG_Students\src\core\film.cpp(96,36): warning C4267: 'inicializando': conversión de 'size_t' a 'int'; posible pérdida de datos
+  hemisphericalsampler.cpp
+  intersection.cpp
+  matrix4x4.cpp
+  ray.cpp
+  scene.cpp
+  utils.cpp
+  vector3d.cpp
+C:\ACG\RTACG_Students\src\core\vector3d.cpp(7,33): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\ACG\RTACG_Students\src\core\vector3d.cpp(7,39): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\ACG\RTACG_Students\src\core\vector3d.cpp(7,45): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\ACG\RTACG_Students\src\core\vector3d.cpp(11,56): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\ACG\RTACG_Students\src\core\vector3d.cpp(11,63): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\ACG\RTACG_Students\src\core\vector3d.cpp(11,70): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\ACG\RTACG_Students\src\core\vector3d.cpp(82,10): warning C4244: '*=': conversión de 'const double' a 'float'; posible pérdida de datos
+C:\ACG\RTACG_Students\src\core\vector3d.cpp(83,10): warning C4244: '*=': conversión de 'const double' a 'float'; posible pérdida de datos
+C:\ACG\RTACG_Students\src\core\vector3d.cpp(84,10): warning C4244: '*=': conversión de 'const double' a 'float'; posible pérdida de datos
+C:\ACG\RTACG_Students\src\core\vector3d.cpp(92,10): warning C4244: '/=': conversión de 'const double' a 'float'; posible pérdida de datos
+C:\ACG\RTACG_Students\src\core\vector3d.cpp(93,10): warning C4244: '/=': conversión de 'const double' a 'float'; posible pérdida de datos
+C:\ACG\RTACG_Students\src\core\vector3d.cpp(94,10): warning C4244: '/=': conversión de 'const double' a 'float'; posible pérdida de datos
+  arealightsource.cpp
+  main.cpp
+C:\ACG\RTACG_Students\src\main.cpp(334,21): warning C4244: 'inicializando': conversión de '_Rep' a 'float'; posible pérdida de datos
+          with
+          [
+              _Rep=double
+          ]
+  emissive.cpp
+  material.cpp
+  mirror.cpp
+  phong.cpp
+  transmissive.cpp
+C:\ACG\RTACG_Students\src\materials\transmissive.cpp(10,22): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+  Compilando...
+  areadirectshader.cpp
+C:\ACG\RTACG_Students\src\shaders\areadirectshader.cpp(89,93): warning C4244: 'argumento': conversión de 'double' a 'size_t'; posible pérdida de datos
+  basecolorshader.cpp
+  depthshader.cpp
+  hemispherical.cpp
+  intersectionshader.cpp
+  neeshader.cpp
+  normalshader.cpp
+  pathtracershader.cpp
+  shader.cpp
+  SSAOshader.cpp
+C:\ACG\RTACG_Students\src\shaders\SSAOshader.cpp(28,31): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+  whittedshader.cpp
+  infiniteplan.cpp
+  shape.cpp
+  sphere.cpp
+  square.cpp
+  Generando código
+  Previous IPDB not found, fall back to full compilation.
+C:\ACG\RTACG_Students\src\lightsources\arealightsource.h(31): warning C4715: 'AreaLightSource::getArea': no todas las rutas de acceso de control devuelven un valor
+  All 986 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Generación de código finalizada
+  RTIS_V2.vcxproj -> C:\ACG\RTACG_Students\VisualStudio2015\RTACG\x64\Release\RT_ACG.exe

@@ -312,14 +312,13 @@ int main()
 
     Shader* basecolorshader = new BaseColorShader(bgColor);
 
-    raytrace(cam, basecolorshader, film, myScene.objectsList, myScene.LightSourceList);
+    //raytrace(cam, basecolorshader, film, myScene.objectsList, myScene.LightSourceList);
 
-    Shader* ssaoshader = new SSAOshader(bgColor); //still empty
+    int N = 16;
+
+    Shader* ssaoshader = new SSAOshader(N, bgColor);
 
     raytrace(cam, ssaoshader, film, myScene.objectsList, myScene.LightSourceList);
-
-
-
 
 
 
