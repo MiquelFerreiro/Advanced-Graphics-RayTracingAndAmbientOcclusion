@@ -135,6 +135,12 @@
     <ClCompile Include="..\..\src\shaders\neeshader.cpp">
       <Filter>src\shaders</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\shaders\basecolorshader.cpp">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shaders\SSAOshader.cpp">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\cameras\camera.h">
@@ -240,6 +246,12 @@
       <Filter>src\shaders</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\shaders\neeshader.h">
+      <Filter>src\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\shaders\basecolorshader.h">
+      <Filter>src\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\shaders\SSAOshader.h">
       <Filter>src\shaders</Filter>
     </ClInclude>
   </ItemGroup>

@@ -23,6 +23,9 @@ public:
 
     //static Vector3D getTransmissiveRefraction(double idx_ref, Vector3D n, Vector3D wo);
 
+    virtual Vector3D getColorMaterial() const {
+        return Vector3D(0.0);
+    }
 
 private:
     float idx_refraction;

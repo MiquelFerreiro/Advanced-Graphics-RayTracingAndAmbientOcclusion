@@ -21,6 +21,9 @@ public:
     Vector3D getEmissiveRadiance() const;
     Vector3D getDiffuseReflectance() const;
 
+    virtual Vector3D getColorMaterial() const {
+        return rho_d;
+    }
 
 private:
     Vector3D rho_d;

@@ -16,7 +16,6 @@ Vector3D DepthShader::computeColor(const Ray& r, const std::vector<Shape*>& objL
     Intersection its;
 
 
-
     if (Utils::getClosestIntersection(r, objList, its)) {
         double distance2camera = (r.o - its.itsPoint).length();
         double color_Task3 = std::max(0.0, 1 - distance2camera / maxDist);

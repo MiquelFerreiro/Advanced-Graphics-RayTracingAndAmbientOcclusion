@@ -166,6 +166,7 @@
     <ClCompile Include="..\..\src\materials\phong.cpp" />
     <ClCompile Include="..\..\src\materials\transmissive.cpp" />
     <ClCompile Include="..\..\src\shaders\areadirectshader.cpp" />
+    <ClCompile Include="..\..\src\shaders\basecolorshader.cpp" />
     <ClCompile Include="..\..\src\shaders\depthshader.cpp" />
     <ClCompile Include="..\..\src\shaders\hemispherical.cpp" />
     <ClCompile Include="..\..\src\shaders\intersectionshader.cpp" />
@@ -173,6 +174,7 @@
     <ClCompile Include="..\..\src\shaders\normalshader.cpp" />
     <ClCompile Include="..\..\src\shaders\pathtracershader.cpp" />
     <ClCompile Include="..\..\src\shaders\shader.cpp" />
+    <ClCompile Include="..\..\src\shaders\SSAOshader.cpp" />
     <ClCompile Include="..\..\src\shaders\whittedshader.cpp" />
     <ClCompile Include="..\..\src\shapes\infiniteplan.cpp" />
     <ClCompile Include="..\..\src\shapes\shape.cpp" />
@@ -203,6 +205,7 @@
     <ClInclude Include="..\..\src\materials\phong.h" />
     <ClInclude Include="..\..\src\materials\transmissive.h" />
     <ClInclude Include="..\..\src\shaders\areadirectshader.h" />
+    <ClInclude Include="..\..\src\shaders\basecolorshader.h" />
     <ClInclude Include="..\..\src\shaders\depthshader.h" />
     <ClInclude Include="..\..\src\shaders\hemispherical.h" />
     <ClInclude Include="..\..\src\shaders\intersectionshader.h" />
@@ -210,6 +213,7 @@
     <ClInclude Include="..\..\src\shaders\normalshader.h" />
     <ClInclude Include="..\..\src\shaders\pathtracershader.h" />
     <ClInclude Include="..\..\src\shaders\shader.h" />
+    <ClInclude Include="..\..\src\shaders\SSAOshader.h" />
     <ClInclude Include="..\..\src\shaders\whittedshader.h" />
     <ClInclude Include="..\..\src\shapes\infiniteplan.h" />
     <ClInclude Include="..\..\src\shapes\shape.h" />

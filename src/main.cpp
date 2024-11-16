@@ -29,6 +29,16 @@
 #include "materials/mirror.h"
 #include "materials/transmissive.h"
 
+//COSAS NUEVAS AO
+
+#include "shaders/basecolorshader.h"
+#include "shaders/SSAOshader.h"
+
+
+
+
+////////////////////////////
+
 #include <chrono>
 
 using namespace std::chrono;
@@ -92,11 +102,11 @@ void buildSceneCornellBox(Camera*& cam, Film*& film,
     Matrix4x4 sphereTransform2;
     sphereTransform2 = Matrix4x4::translate(Vector3D(-1.5, -offset + 3*radius, 4));
 
-    Shape* s2 = new Sphere(radius, sphereTransform2, transmissive);
-    //Shape* s2 = new Sphere(radius, sphereTransform2, blueGlossy_80);
+    //Shape* s2 = new Sphere(radius, sphereTransform2, transmissive);
+    Shape* s2 = new Sphere(radius, sphereTransform2, blueGlossy_80);
 
-    Shape* square = new Square(Vector3D(offset + 0.999, -offset-0.2, 3.0), Vector3D(0.0, 4.0, 0.0), Vector3D(0.0, 0.0, 2.0), Vector3D(-1.0, 0.0, 0.0), mirror);
-    //Shape* square = new Square(Vector3D(offset + 0.999, -offset - 0.2, 3.0), Vector3D(0.0, 4.0, 0.0), Vector3D(0.0, 0.0, 2.0), Vector3D(-1.0, 0.0, 0.0), cyandiffuse);
+    //Shape* square = new Square(Vector3D(offset + 0.999, -offset-0.2, 3.0), Vector3D(0.0, 4.0, 0.0), Vector3D(0.0, 0.0, 2.0), Vector3D(-1.0, 0.0, 0.0), mirror);
+    Shape* square = new Square(Vector3D(offset + 0.999, -offset - 0.2, 3.0), Vector3D(0.0, 4.0, 0.0), Vector3D(0.0, 0.0, 2.0), Vector3D(-1.0, 0.0, 0.0), cyandiffuse);
 
     myScene.AddObject(s1);
     myScene.AddObject(s2);
@@ -180,8 +190,6 @@ void raytrace(Camera* &cam, Shader* &shader, Film* &film,
             film->setPixelValue(col, lin, pixelColor);
         }
     }
-
-
 }
 
 
@@ -224,48 +232,54 @@ int main()
     Film *film;
     film = new Film(720, 512);
 
-
     // Declare the shader
     Vector3D bgColor(0.0, 0.0, 0.0); // Background color (for rays which do not intersect anything)
     Vector3D intersectionColor(1,0,0);
     Vector3D ambientLight(0.2, 0.2, 0.2);
     
-    //First Assignment
-    Shader *shader = new IntersectionShader (intersectionColor, bgColor);
-    Shader *depthshader = new DepthShader (intersectionColor,10.0f, bgColor);
-    Shader *normalshader = new NormalShader(intersectionColor, 10.0f, bgColor);
-    Shader *whittedshader = new WhittedShader(intersectionColor, 10.0f, bgColor, ambientLight);
-    
+    {
 
-    //Lab 2 Part 1
 
-    Shader* hemispherical = new Hemispherical(intersectionColor, 10.0f, bgColor, ambientLight, 32);
+    ////First Assignment
+    //Shader *shader = new IntersectionShader (intersectionColor, bgColor);
+    //Shader *depthshader = new DepthShader (intersectionColor,10.0f, bgColor);
+    //Shader *normalshader = new NormalShader(intersectionColor, 10.0f, bgColor);
+    //Shader *whittedshader = new WhittedShader(intersectionColor, 10.0f, bgColor, ambientLight);
+    //
 
-    Shader* areadirectshader = new AreaDirectShader(intersectionColor, 10.0f, bgColor, ambientLight, 32);
+    ////Lab 2 Part 1
 
-    //Lab 2 Part 2
+    //Shader* hemispherical = new Hemispherical(intersectionColor, 10.0f, bgColor, ambientLight, 32);
 
-    Shader* pathtracershader = new PathTracerShader(0.7, 2, 64);
+    //Shader* areadirectshader = new AreaDirectShader(intersectionColor, 10.0f, bgColor, ambientLight, 32);
 
-    Shader* neeshader = new NEEShader(0.7, 4, 64);
+    ////Lab 2 Part 2
 
-    // Build the scene---------------------------------------------------------
-    // 
-    // Declare pointers to all the variables which describe the scene
-    Camera* cam;
-    Scene myScene;
+    //Shader* pathtracershader = new PathTracerShader(0.7, 2, 64);
+
+    //Shader* neeshader = new NEEShader(0.7, 4, 64);
+
     //Create Scene Geometry and Illumiantion
     //buildSceneSphere(cam, film, myScene); //Task 2,3,4;
+
+    }
+
+    // Build the scene---------------------------------------------------------
+    // Declare pointers to all the variables which describe the scene
+
+    Camera* cam;
+    Scene myScene;
+
     buildSceneCornellBox(cam, film, myScene); //Task 5
-
-
-    //---------------------------------------------------------------------------
-
-    //Paint Image ONLY TASK 1
-    //PaintImage(film);
 
     // Launch some rays! TASK 2,3,...   
     auto start = high_resolution_clock::now();
+
+    //---------------------------------------------------------------------------
+    {
+ //Paint Image ONLY TASK 1
+ //PaintImage(film);
+    }
 
     // Lab 1
     {
@@ -279,17 +293,37 @@ int main()
         //raytrace(cam, whittedshader, film, myScene.objectsList, myScene.LightSourceList);
     }
 
-    // Lab 2 Part 1
-    
-    //raytrace(cam, hemispherical, film, myScene.objectsList, myScene.LightSourceList);
+    //Lab 2
+    {
+        // Lab 2 Part 1
 
-    //raytrace(cam, areadirectshader, film, myScene.objectsList, myScene.LightSourceList);
+        //raytrace(cam, hemispherical, film, myScene.objectsList, myScene.LightSourceList);
 
-    // Lab 2 Part 2
+        //raytrace(cam, areadirectshader, film, myScene.objectsList, myScene.LightSourceList);
 
-    //raytrace(cam, pathtracershader, film, myScene.objectsList, myScene.LightSourceList);
+        // Lab 2 Part 2
 
-    raytrace(cam, neeshader, film, myScene.objectsList, myScene.LightSourceList);
+        //raytrace(cam, pathtracershader, film, myScene.objectsList, myScene.LightSourceList);
+
+        //raytrace(cam, neeshader, film, myScene.objectsList, myScene.LightSourceList);
+    }
+
+    // SHADERS AMBIENT OCCLUSION
+
+    Shader* basecolorshader = new BaseColorShader(bgColor);
+
+    raytrace(cam, basecolorshader, film, myScene.objectsList, myScene.LightSourceList);
+
+    Shader* ssaoshader = new SSAOshader(bgColor); //still empty
+
+    raytrace(cam, ssaoshader, film, myScene.objectsList, myScene.LightSourceList);
+
+
+
+
+
+
+    ///////////////////////////////////////
 
     auto stop = high_resolution_clock::now();
 

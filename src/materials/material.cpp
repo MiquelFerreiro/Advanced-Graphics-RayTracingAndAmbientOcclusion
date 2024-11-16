@@ -30,3 +30,8 @@ Vector3D Material::getDiffuseReflectance() const
 
     return -1;
 }
+
+Vector3D Material::getColorMaterial() const {
+
+    return -1;
+}

@@ -21,6 +21,8 @@ public:
     virtual bool hasDiffuseOrGlossy() const = 0;
     virtual bool isEmissive() const = 0;
 
+    virtual Vector3D getColorMaterial() const;
+
 
     
 };
