@@ -66,7 +66,7 @@ void buildSceneCornellBox(Camera*& cam, Film*& film,
     Material* blueGlossy_20 = new Phong(Vector3D(0.2, 0.3, 0.8), Vector3D(0.2, 0.2, 0.2), 20);
     Material* blueGlossy_80 = new Phong(Vector3D(0.2, 0.3, 0.8), Vector3D(0.2, 0.2, 0.2), 80);
     Material* cyandiffuse = new Phong(Vector3D(0.2, 0.8, 0.8), Vector3D(0, 0, 0), 100);
-    Material* emissive = new Emissive(Vector3D(25, 25, 25), Vector3D(0.5));
+    //Material* emissive = new Emissive(Vector3D(25, 25, 25), Vector3D(0.5));
 
     Material* mirror = new Mirror();
     Material* transmissive = new Transmissive(0.7);
@@ -82,7 +82,7 @@ void buildSceneCornellBox(Camera*& cam, Film*& film,
     Shape* topPlan = new InfinitePlan(Vector3D(0, offset, 0), Vector3D(0, -1, 0), greyDiffuse);
     Shape* bottomPlan = new InfinitePlan(Vector3D(0, -offset, 0), Vector3D(0, 1, 0), greyDiffuse);
     Shape* backPlan = new InfinitePlan(Vector3D(0, 0, 3 * offset), Vector3D(0, 0, -1), greyDiffuse);
-    Shape* square_emissive = new Square(Vector3D(-1.0, 3.0, 3.0), Vector3D(2.0, 0.0, 0.0), Vector3D(0.0, 0.0, 2.0), Vector3D(0.0, -1.0, 0.0), emissive);
+    //Shape* square_emissive = new Square(Vector3D(-1.0, 3.0, 3.0), Vector3D(2.0, 0.0, 0.0), Vector3D(0.0, 0.0, 2.0), Vector3D(0.0, -1.0, 0.0), emissive);
 
 
     myScene.AddObject(leftPlan);
@@ -90,27 +90,35 @@ void buildSceneCornellBox(Camera*& cam, Film*& film,
     myScene.AddObject(topPlan);
     myScene.AddObject(bottomPlan);
     myScene.AddObject(backPlan);
-    myScene.AddObject(square_emissive);
-
-
-    // Place the Spheres inside the Cornell Box
-    double radius = 1;         
-    Matrix4x4 sphereTransform1;
-    sphereTransform1 = Matrix4x4::translate(Vector3D(1.5, -offset + radius, 6));
-    Shape* s1 = new Sphere(radius, sphereTransform1, blueGlossy_80); 
-
-    Matrix4x4 sphereTransform2;
-    sphereTransform2 = Matrix4x4::translate(Vector3D(-1.5, -offset + 3*radius, 4));
-
-    //Shape* s2 = new Sphere(radius, sphereTransform2, transmissive);
-    Shape* s2 = new Sphere(radius, sphereTransform2, blueGlossy_80);
+    //myScene.AddObject(square_emissive);
 
     //Shape* square = new Square(Vector3D(offset + 0.999, -offset-0.2, 3.0), Vector3D(0.0, 4.0, 0.0), Vector3D(0.0, 0.0, 2.0), Vector3D(-1.0, 0.0, 0.0), mirror);
-    Shape* square = new Square(Vector3D(offset + 0.999, -offset - 0.2, 3.0), Vector3D(0.0, 4.0, 0.0), Vector3D(0.0, 0.0, 2.0), Vector3D(-1.0, 0.0, 0.0), cyandiffuse);
+    //Shape* square = new Square(Vector3D(offset + 0.999, -offset - 0.2, 3.0), Vector3D(0.0, 4.0, 0.0), Vector3D(0.0, 0.0, 2.0), Vector3D(-1.0, 0.0, 0.0), cyandiffuse);
 
-    myScene.AddObject(s1);
-    myScene.AddObject(s2);
-    myScene.AddObject(square);
+    //myScene.AddObject(square);
+
+    // Place the Spheres inside the Cornell Box
+
+    std::vector<double> radius = { 2, 0.5, 0.7, 1, 0.6, 0.8, 1, 0.6, 0.4 };
+
+    //X, Y, Z --> proporcional a (derecha, arriba, + lejos)
+    //std::vector<Vector3D> positions = { Vector3D(0, -offset + 1.5, 3), Vector3D(1.5, -offset + 1, 0)};
+
+    std::vector<Vector3D> positions = { Vector3D(4, -3, 9), Vector3D(2, -offset, 3.5), Vector3D(1.4, -offset, 4), 
+        Vector3D(-2, -1.5, 5), Vector3D(-1, -0.5, 4), Vector3D(1, 2, 9), Vector3D(4, 3, 4), Vector3D(-1, 3, 4), Vector3D(-2.5, 0, 5.5) };
+
+    Material* materials[] = { blueGlossy_80, redDiffuse, cyandiffuse, greenDiffuse, blueGlossy_80, greenDiffuse, redDiffuse, blueGlossy_80, cyandiffuse };
+
+    for (int idx = 0; idx < radius.size(); idx++) {
+
+        Matrix4x4 sphereTransform;
+        sphereTransform = Matrix4x4::translate(positions[idx]);
+
+        Shape* sphere = new Sphere(radius[idx], sphereTransform, materials[idx]);
+
+        myScene.AddObject(sphere);
+    }
+
 
 }
 
@@ -314,9 +322,11 @@ int main()
 
     //raytrace(cam, basecolorshader, film, myScene.objectsList, myScene.LightSourceList);
 
-    int N = 16;
+    int N = 512;
 
-    Shader* ssaoshader = new SSAOshader(N, bgColor);
+    float detection_range = 5;
+
+    Shader* ssaoshader = new SSAOshader(N, detection_range, bgColor);
 
     raytrace(cam, ssaoshader, film, myScene.objectsList, myScene.LightSourceList);
 
