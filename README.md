@@ -1,0 +1,1 @@
+For the AMBIENT OCCLUSION demo, implemented for the final presentation, you can change the samples per pixel and the "detection range" at the end of main.ccp, as well as simply rendering the image with base colors and no shading. 
